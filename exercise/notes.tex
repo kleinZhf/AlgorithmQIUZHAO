@@ -19,9 +19,63 @@
 \begin{document}
 算法刷题记录
 
-\section{Leetcode 4 寻找两个正序数组的中位数 times : 2}
+\section{Leetcode 4 寻找两个正序数组的中位数 times : 3}
 二分划分数组方法，在较短数组上寻找划分点，通过二分法找到将两个数组分割为大，小两部分
 特别注意在二分过程中的数组越界和上下界问题！！
 此题中对于正确划分的两个充分必要条件的取反可以有两种条件，两种条件的二分结构不同
+caution: 注意二分是对较小数组的指标进行的不要移动大数组的下标
+
+
+\section{Leetcode 350 两个数组的交集II times : 3}
+1. hash table
+2. sort + 双指针
+
+\section{Leetcode 26 删除排序数组中的重复项 time : 3}
+双指针
+注意数组越界
+
+\section{Leetcode 189 旋转数组 time : 3}
+1. 环状替换 将第i个数填充到第i+k个位置，利用一个指标count控制被填充的数的数量，
+count==n即全部替换完成，一次循环不一定能替换整个数组，利用是否回到原点来跳出循环
+并从下一个元素开始新的循环
+
+2. 翻转数组，翻转整个数组，翻转前k个元素，翻转后n-k个元素
+
+\section{Leetcode 120 三角形最小路径和 times : 2}
+动态规划 + 滚动数组
+caution ： 滚动时dp[i]与dp[i],dp[i-1]有关，指标从大向小滚动
+可以自顶向下，也可以自底向上
+
+\section{Leetcode 21 合并两个有序链表 times : 2}
+归并排序的合并操作
+
+\section{Leetcode 88 合并两个有序数组 times : 2}
+原位合并两个有序数组，考虑从后向前归并
+
+\section{Leetcode 1 两数之和 times : 2}
+hash table
+
+\section{Leetcode 283 移动零 times : 2}
+双指针
+
+\section{Leetcode 66 加一 times : 2}
+加法运算
+
+\section{Leetcode 242 有效的字母异位词 times : 2}
+hash table
+
+\section{Leetcode 641 设计循环双端队列 times : 2}
+用数组实现，利用head和ct两个指针记录当前队列头和大小，循环利用数组实现
+
+\section{Leetcode 49 字母异位词分组 times : 2}
+利用排序后的字符串作为key，key相同的放在一起
+
+\section{Leetcode 42 接雨水 times : 2}
+1. 从左到右扫描数组，并记录最大值，更新最大值时同时更新区间内可以接的水量
+再从右到左扫描到最大值处更新右侧未记录的水量
+2. 利用两个数组分别记录每一点左侧最大值和右侧最大值，然后遍历一遍数组累加
+每一点能接的雨水
+3. 双指针法，两个指针分别从两头开始向中间移动，同时记录左侧最大值和右侧最
+大值，每次更新两个指针所指的较小的位置能储存的水量，同时移动该指针
 
 \end{document}
