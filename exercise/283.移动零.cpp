@@ -8,13 +8,19 @@
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int i = 0;
+        int cur = 0;
 
-        for (int j = 0; j < nums.size(); ++j) {
-            if (nums[j]) {
-                swap(nums[i++], nums[j]);
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i]) {
+                mySwap(nums[cur++], nums[i]);
             }
         }
+    }
+private:
+    void mySwap(int &a, int &b) {
+        int tmp = a;
+        a = b;
+        b = tmp;
     }
 };
 // @lc code=end

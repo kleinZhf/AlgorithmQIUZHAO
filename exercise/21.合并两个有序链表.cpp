@@ -34,8 +34,8 @@ public:
             }
         }
 
-        if(l1 != NULL) cur->next = l1;
-        if(l2 != NULL) cur->next = l2;
+        if (l1 != NULL) cur->next = l1;
+        if (l2 != NULL) cur->next = l2;
 
         return head->next;
     }

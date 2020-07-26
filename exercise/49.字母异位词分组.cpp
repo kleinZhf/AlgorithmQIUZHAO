@@ -8,21 +8,22 @@
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        std::map<std::string, std::vector<std::string>> mp;
-        std::vector<std::vector<std::string>> res;
+        unordered_map<string, vector<string>> mp;
+        vector<vector<string>> res;
 
         for (const auto &s : strs) {
-            std::string tmp(s);
-            std::sort(tmp.begin(), tmp.end());
+            string tmp(s);
+            sort(tmp.begin(), tmp.end());
 
-            if (mp.count(tmp) == 0) {
-                mp[tmp] = std::vector<std::string>();
+            if (mp.find(tmp) == mp.end()) {
+                mp[tmp] = vector<string>();
             }
+
             mp[tmp].push_back(s);
         }
 
-        for (const auto &it : mp) {
-            res.push_back((it).second);
+        for (const auto &m : mp) {
+            res.push_back(m.second);
         }
 
         return res;

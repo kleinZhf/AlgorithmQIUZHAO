@@ -1,6 +1,7 @@
 \documentclass[UTF8]{ctexart}
 \usepackage[svgnames]{xcolor}
 \usepackage{geometry, hyperref, fancyhdr, enumitem, lastpage, changepage}
+\usepackage{framed, listings}
 \geometry{a4paper, hmargin = 2.53cm, vmargin = 2.53cm}
 \ctexset{
 	section/format = {\large\bfseries},
@@ -19,63 +20,289 @@
 \begin{document}
 算法刷题记录
 
-\section{Leetcode 4 寻找两个正序数组的中位数 times : 3}
+\section{Leetcode 4 寻找两个正序数组的中位数 times : 4}
 二分划分数组方法，在较短数组上寻找划分点，通过二分法找到将两个数组分割为大，小两部分
 特别注意在二分过程中的数组越界和上下界问题！！
+
 此题中对于正确划分的两个充分必要条件的取反可以有两种条件，两种条件的二分结构不同
+
 caution: 注意二分是对较小数组的指标进行的不要移动大数组的下标
 
+caution:: 二分从(0, m)开始，mid的计算考虑条件判断时的数组越界问题！！！
 
-\section{Leetcode 350 两个数组的交集II times : 3}
+
+\section{Leetcode 350 两个数组的交集II times : 4}
 1. hash table
+
 2. sort + 双指针
 
-\section{Leetcode 26 删除排序数组中的重复项 time : 3}
+\section{Leetcode 26 删除排序数组中的重复项 time : 4}
 双指针
 注意数组越界
 
-\section{Leetcode 189 旋转数组 time : 3}
+\section{Leetcode 189 旋转数组 time : 4}
 1. 环状替换 将第i个数填充到第i+k个位置，利用一个指标count控制被填充的数的数量，
 count==n即全部替换完成，一次循环不一定能替换整个数组，利用是否回到原点来跳出循环
 并从下一个元素开始新的循环
 
 2. 翻转数组，翻转整个数组，翻转前k个元素，翻转后n-k个元素
 
-\section{Leetcode 120 三角形最小路径和 times : 2}
+caution: 首先k对n取余！！
+
+\section{Leetcode 120 三角形最小路径和 times : 4}
 动态规划 + 滚动数组
+
 caution ： 滚动时dp[i]与dp[i],dp[i-1]有关，指标从大向小滚动
 可以自顶向下，也可以自底向上
 
-\section{Leetcode 21 合并两个有序链表 times : 2}
+注意遍历数组的方向，++i还是--i
+
+\section{Leetcode 21 合并两个有序链表 times : 4}
 归并排序的合并操作
 
-\section{Leetcode 88 合并两个有序数组 times : 2}
+\section{Leetcode 88 合并两个有序数组 times : 4}
 原位合并两个有序数组，考虑从后向前归并
 
-\section{Leetcode 1 两数之和 times : 2}
+\section{Leetcode 1 两数之和 times : 4}
 hash table
 
-\section{Leetcode 283 移动零 times : 2}
+\section{Leetcode 283 移动零 times : 4}
 双指针
 
-\section{Leetcode 66 加一 times : 2}
+判断非零直接用逻辑判断if (target) 不要用if (target != 0)
+
+\section{Leetcode 66 加一 times : 3}
 加法运算
 
-\section{Leetcode 242 有效的字母异位词 times : 2}
+\section{Leetcode 242 有效的字母异位词 times : 4}
 hash table
 
-\section{Leetcode 641 设计循环双端队列 times : 2}
+\section{Leetcode 641 设计循环双端队列 times : 4}
 用数组实现，利用head和ct两个指针记录当前队列头和大小，循环利用数组实现
 
-\section{Leetcode 49 字母异位词分组 times : 2}
+\section{Leetcode 49 字母异位词分组 times : 4}
 利用排序后的字符串作为key，key相同的放在一起
 
-\section{Leetcode 42 接雨水 times : 2}
+\section{Leetcode 42 接雨水 times : 4}
 1. 从左到右扫描数组，并记录最大值，更新最大值时同时更新区间内可以接的水量
 再从右到左扫描到最大值处更新右侧未记录的水量
+
 2. 利用两个数组分别记录每一点左侧最大值和右侧最大值，然后遍历一遍数组累加
 每一点能接的雨水
+
 3. 双指针法，两个指针分别从两头开始向中间移动，同时记录左侧最大值和右侧最
 大值，每次更新两个指针所指的较小的位置能储存的水量，同时移动该指针
+
+\section{Leetcode 96 不同的二叉搜索树 times : 4}
+遍历根节点，每个根节点对应两个子树，相乘即为该根节点的不同的BST
+
+\section{Leetcode 11 盛水最多的容器 times : 4}
+双指针 O(n)
+\begin{framed}
+	\begin{lstlisting}
+		int maxArea(vector<int>& height) {
+			if (height.size() <= 1) return 0;
+			int left = 0, right = height.size() - 1;
+
+			int res = 0;
+
+			while (left < right) {
+				res = max(res, (right - left) * (height[left] < height[right] ? height[left++] : height[right--]));
+			}
+
+			return res;
+
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 785 判断二分图 times : 4}
+1. 染色法，利用DFS或者BFS将由边相连的节点染成不同色，染色过程中出现矛盾即不是二分图
+
+2. 并查集，UnionFind，用数组记录每个节点的root，将每个节点连出去的边并入同一个root
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		Class UnionFind {
+			private:
+			vector<int> _root;
+			public:
+			UnionFind(int n) : _root(vector<int>(n)) {
+				for (int i = 0; i < n; ++i) {
+					_root[i] = i;
+				}
+			}
+
+			int find(int x) {
+				if (_root[x] = x) {
+					return x;
+				}
+				return _root[x] = find(_root[x]);
+			}
+
+			void Union(int x, int y) {
+				_root[find(x)] = find(y);
+			}
+
+			bool isConnected(int x, int y) {
+				return find(x) == find(y);
+			}
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 151 翻转字符串里的单词 times : 4}
+1. 利用stringstream 分词和翻转句子
+
+2. 利用双指针去空格和分词，快指针找到非空格字符并在慢指针处复制该字符，
+然后将找到的每个词翻转，最后翻转整个句子即可
+
+caution: 寻找空格的快指针到达串尾时直接退出循环，从而去掉串尾的空格。用
+一个label wordCt指示是第几个单词，wordCt != 0 时在每一个单词后添空格
+
+\section{Leetcode 125 验证回文串 times : 4}
+头尾双指针，判断是否为数字和字母，判断是否相等
+
+C++ io加速手段
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		static int x = []() {
+			std::ios::sync_with_stdio(false);
+			cin.tie(NULL);
+			return 0; }();
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 127 单词接龙 times : 4}
+1. BFS 将wordList存入hash table, 对当前处理的单词变换每一个位置的每一个字母，
+如果在wordList中就压入队列并从wordList删除，第一次找到endWord时即为最短序列
+
+2. 双向BFS 用两个hash table分别存储从beginWord和endWord开始搜索的word,每次
+选择其中较小的table作为beginSet,搜到在endSet中的单词即可返回step
+
+\section{Leetcode 126 单词接龙II times : 2}
+BFS 同时存储路径依赖的邻接表，构造完成后DFS输出路径
+
+\section{Leetcode 70 爬楼梯 times : 3}
+动态规划+滚动数组
+
+\section{Leetcode 15 三数之和 times : 3}
+排序转化为有序数组的二数之和，然后双指针
+
+caution：每压入一组数都要进行去重
+
+\section{Leetcode 206 反转链表 times : 3}
+1. 递归 当前节点的下个节点指向当前节点！！！
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		ListNode* reverseList(ListNode* head) {
+			if (head == NULL || head->next == NULL) return head;
+	
+			ListNode *p = reverseList(head->next);
+			head->next->next = head;
+			head->next = NULL;
+	
+			return p;
+		}
+	\end{lstlisting}
+\end{framed}
+
+2。 迭代 记录head->next，记录反转后的头节点
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		ListNode* reverseList(ListNode* head) {
+			ListNode *new_head = NULL;
+			while (head) {
+				ListNode *cur = head->next;
+				head->next = new_head;
+				new_head = head;
+				head = cur;
+			}
+	
+			return new_head;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 24 两两交换链表中的节点 times : 3} 
+\begin{framed}
+	\begin{lstlisting}
+		ListNode* swapPairs(ListNode* head) {
+			ListNode **pp, *a, *b;
+			pp = &head;
+
+			while ((a = *pp) && (b = a->next)) {
+				a->next = b->next;
+				b->next = a;
+				*pp = b;
+				pp = &(a->next);
+			}
+
+			return head;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 141 环形链表 times : 2}
+快慢指针，若有环，快指针会追上慢指针
+
+caution: 处理好初始条件和边界条件
+
+\section{Leetcode 142 环形链表II times : 2}
+按照141的方法判断是否有环，若有环，则将慢指针重置为head，快慢指针相同速度前进，相遇处即为
+成环点。
+
+\section{Leetcode 25 K个一组翻转链表 times : 2}
+双指针确定翻转的区间：slow -> ...  -> fast， 翻转链表直到slow = fast，此时newhead为fast
+的前驱，记录初始slow即为翻转链表的tail，tail->next = fast, 再继续处理fast之后的链表
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		ListNode* reverseKGroup(ListNode *head, int k) {
+			ListNode *result = new ListNode(0);
+
+			result->next = head;
+			ListNode *pre = result;
+			ListNode *slow = head, *fast = head;
+
+			while (head) {
+				int c = 0;
+				while (c < k && fast) {
+					fast = fast->next;
+					++c;
+				}
+
+				if (c != k) break;
+
+				ListNode *tail = slow;
+				ListNode *newhead = NULL;
+
+				while (slow != fast) {
+					ListNode *tmp = slow->next;
+					slow->next = newhead;
+					newhead = slow;
+					slow = tmp;
+				}
+
+				pre->next = newhead;
+				pre = tail;
+				tail->next = fast;
+			}
+
+			return result->next;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 20 有效的括号 times : 2}
+栈
+
+\section{Leetcode 155 最小栈 times : 2}
+辅助栈加数据栈两个栈实现
+
+\section{Leetcode 84 柱状图中的最大矩形 times : 2}
+使用递增的栈，每次弹出栈顶元素时计算该栈顶元素能构成的最大矩形
+在数组前加零使操作不会越界，在数组后加零可在最后将栈弹空。
+
+\section{Leetcode 239 滑动窗口最大值 times : 2}
+维护一个数值递减的双端队列，从队尾添加元素，从队首读取当前最大值
 
 \end{document}

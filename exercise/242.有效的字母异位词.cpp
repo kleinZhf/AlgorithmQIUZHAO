@@ -8,25 +8,19 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        map<char, int> mp;
+        if (s.size() != t.size()) return false;
+        vector<int> h(26, 0);
 
-        for (const auto &c : s) {
-            mp[c]++;
+        for (int i = 0; i < s.size(); ++i) {
+            h[s[i] - 'a']++;
+            h[t[i] - 'a']--;
         }
 
-        for (const auto &c : t) {
-            if (mp.count(c) == 0) {
-                return false;
-            }
-            else if(mp[c] == 1) {
-                mp.erase(c);
-            }
-            else {
-                mp[c]--;
-            }
+        for (int i = 0; i < 26; ++i) {
+            if (h[i]) return false;
         }
 
-        return mp.size() == 0;
+        return true;
     }
 };
 // @lc code=end
