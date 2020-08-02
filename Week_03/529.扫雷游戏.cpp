@@ -1,11 +1,10 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
-#include<unordered_set>
+/*
+ * @lc app=leetcode.cn id=529 lang=cpp
+ *
+ * [529] 扫雷游戏
+ */
 
-
-using namespace std;
-
+// @lc code=start
 class Solution {
 public:
     vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
@@ -31,16 +30,15 @@ private:
         }
         return res;
     }
+
     void dfs(vector<vector<char>>& board, int x, int y) {
         if (x < 0 || x >= board.size() || y < 0 || y >= board[0].size()) return;
-        cout << x << ' ' << y << ' ' << board[x][y] << endl;
         if (board[x][y] != 'E') return;
 
         int ct = ctBoom(board, x, y);
-        cout << ct << endl;
+
         if (ct) {
             board[x][y] = '0' + ct;
-            return;
         }
         else {
             board[x][y] = 'B';
@@ -52,24 +50,5 @@ private:
         }
     }
 };
+// @lc code=end
 
-int main(void) {
-    vector<vector<char>> grid{
-        {'E', 'E', 'E', 'E', 'E'},
-        {'E', 'E', 'M', 'E', 'E'},
-        {'E', 'E', 'E', 'E', 'E'},
-        {'E', 'E', 'E', 'E', 'E'}
-    };
-    vector<int> click{3, 0};
-
-    vector<vector<char>> res = Solution().updateBoard(grid, click);
-
-    for (const auto& r : res) {
-        for (const auto& s : r) {
-            cout << s << ' ';
-        }
-        cout << endl;
-    }
-
-    return 0;
-}

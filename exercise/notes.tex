@@ -179,18 +179,20 @@ C++ io加速手段
 2. 双向BFS 用两个hash table分别存储从beginWord和endWord开始搜索的word,每次
 选择其中较小的table作为beginSet,搜到在endSet中的单词即可返回step
 
-\section{Leetcode 126 单词接龙II times : 2}
+\section{Leetcode 126 单词接龙II times : 3}
 BFS 同时存储路径依赖的邻接表，构造完成后DFS输出路径
 
-\section{Leetcode 70 爬楼梯 times : 3}
+\section{Leetcode 70 爬楼梯 times : 4}
 动态规划+滚动数组
 
-\section{Leetcode 15 三数之和 times : 3}
+\section{Leetcode 15 三数之和 times : 4}
 排序转化为有序数组的二数之和，然后双指针
 
-caution：每压入一组数都要进行去重
 
-\section{Leetcode 206 反转链表 times : 3}
+caution：每压入一组数都要进行去重
+找到一组数和双指针扫完一次区间后都需要去重
+
+\section{Leetcode 206 反转链表 times : 4}
 1. 递归 当前节点的下个节点指向当前节点！！！
 \begin{framed}
 	\begin{lstlisting}[language=C++]
@@ -223,7 +225,7 @@ caution：每压入一组数都要进行去重
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 24 两两交换链表中的节点 times : 3} 
+\section{Leetcode 24 两两交换链表中的节点 times : 4} 
 \begin{framed}
 	\begin{lstlisting}
 		ListNode* swapPairs(ListNode* head) {
@@ -242,18 +244,20 @@ caution：每压入一组数都要进行去重
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 141 环形链表 times : 2}
+\section{Leetcode 141 环形链表 times : 4}
 快慢指针，若有环，快指针会追上慢指针
 
 caution: 处理好初始条件和边界条件
 
-\section{Leetcode 142 环形链表II times : 2}
+\section{Leetcode 142 环形链表II times : 4}
 按照141的方法判断是否有环，若有环，则将慢指针重置为head，快慢指针相同速度前进，相遇处即为
 成环点。
 
-\section{Leetcode 25 K个一组翻转链表 times : 2}
+\section{Leetcode 25 K个一组翻转链表 times : 4}
 双指针确定翻转的区间：slow -> ...  -> fast， 翻转链表直到slow = fast，此时newhead为fast
 的前驱，记录初始slow即为翻转链表的tail，tail->next = fast, 再继续处理fast之后的链表
+
+caution: 注意跳出循环条件，寻找fast位置时ct到了什么位置
 \begin{framed}
 	\begin{lstlisting}[language=C++]
 		ListNode* reverseKGroup(ListNode *head, int k) {
@@ -292,17 +296,400 @@ caution: 处理好初始条件和边界条件
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 20 有效的括号 times : 2}
+\section{Leetcode 20 有效的括号 times : 4}
 栈
 
-\section{Leetcode 155 最小栈 times : 2}
+caution : 取栈顶时判断栈是否为空，最后返回栈是否为空
+
+\section{Leetcode 155 最小栈 times : 4}
 辅助栈加数据栈两个栈实现
 
-\section{Leetcode 84 柱状图中的最大矩形 times : 2}
+\section{Leetcode 84 柱状图中的最大矩形 times : 4}
 使用递增的栈，每次弹出栈顶元素时计算该栈顶元素能构成的最大矩形
 在数组前加零使操作不会越界，在数组后加零可在最后将栈弹空。
 
-\section{Leetcode 239 滑动窗口最大值 times : 2}
+caution : 每次弹出栈顶元素时计算一次面积$(i - S.top() - 1) * heights[tmp]$
+
+\section{Leetcode 239 滑动窗口最大值 times : 4}
 维护一个数值递减的双端队列，从队尾添加元素，从队首读取当前最大值
+
+维护一个大顶堆
+
+\section{Leetcode 94 二叉树的中序遍历 times : 4}
+1.递归DFS
+
+2.栈，将当前节点和其左子树递归压入栈，处理栈顶元素，递归处理栈顶的右子树
+
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<int> inorderTraversal(TreeNode* root) {
+			stack<TreeNode> S;
+			vector<int> res;
+
+			while (root || !S.empty()) {
+				while (root) {
+					S.push(root);
+					root = root->left;
+				}
+
+				root = S.top();
+				S.pop();
+				res.push_back(root->val);
+				root = root->right;
+			}
+
+			return res;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 144 二叉树的前序遍历 times : 4}
+1.递归DFS
+
+2.栈，处理栈顶元素，依次压入右子树，左子树
+
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<int> preorderTraversal(TreeNode* root) {
+			if (!root) return {};
+			stack<TreeNode*> S;
+			vector<int> res;
+			S.push(root);
+
+			while (!S.empty()) {
+				root = S.top();
+				S.pop();
+				res.push_back(root->val);
+
+				if (root->right) S.push(root->right);
+				if (root->left) S.push(root->left);
+			}
+
+			return res;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 590 N叉树的后序遍历 times : 4}
+1.递归DFS
+
+2.栈，处理根，然后将所有子树压入栈，递归处理栈顶元素，最后reverse得到的序列
+
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<int> postorder(Node* root) {
+			if (!root) return {};
+			stack<Node*> S;
+			vector<int> res;
+			S.push(root);
+
+			while (!S.empty()) {
+				root = S.top();
+				S.pop();
+				res.push_back(root->val);
+
+				for (const auto &node : root->children) {
+					S.push(node);
+				}
+			}
+
+			reverse(res.begin(), res.end());
+			return res;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 589 N叉树的前序遍历 times : 4}
+1.递归DFS
+
+2.栈，处理根，然后将所有子树逆序压入栈，递归处理栈顶元素
+
+\section{Leetcode 429 N叉树的层序遍历 times : 4}
+1.BFS
+
+2.DFS，记录当前节点的层数，将其存入对应层数的数组中
+
+\section{Leetcode 264 丑数II times : 4}
+三指针动态规划，利用三个指针i2, i3, i5记录当前乘2，乘3，乘5的位置，每次选取三个数
+中较小的为下一个丑数，然后更新对应的指针。
+
+\section{Leetcode 347 前k个高频元素 times : 2}
+hash map 统计元素频次，大顶堆输出前k大元素
+
+$\mathrm{priority\_queue<Type, Container, Functional>}$
+Functional 为类对象，不能用函数指针，默认使用less方法，构成大顶堆
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		struct cmp{
+			bool operator() (Type &a, Type &b) {
+				return a < b;
+			}
+		};
+
+		priority_queue<Type, vector<Type>, cmp> pq;
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 236 二叉树最近公共祖先 times : 2}
+1. 分别dfs记录从root到p,q的路径，依次对比路径上的元素找到最近公共祖先
+
+2. 递归
+最近公共祖先的左右子树(或其自己)分别包含p,q节点,其他公共祖先则是只有一棵子树同时包含p,q，另一棵
+子树不包含p,q
+
+构造递归函数满足如下条件
+\begin{itemize}
+	\item p, q都存在在当前树中，返回公共祖先
+	\item p, q只有一个存在在当前树中，返回存在的那个
+	\item p, q都不存在在当前树中，返回NULL
+\end{itemize}
+
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		TreeNode* lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+			if (root == NULL || root == p || root == q) {
+				return root;
+			}
+
+			TreeNode *left = lowestCommonAncestor(root->left, p, q);
+			TreeNode *right = lowestCommonAncestor(root->right, p, q);
+
+			if (left == NULL) {
+				return right;
+			}
+			if (right == NULL) {
+				return left;
+			}
+			if (left && right) {
+				return root;
+			}
+
+			return NULL;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 105 从前序与中序遍历序列构造二叉树 times : 2}
+1. 递归
+preorder root ... root->left ... root->right
+inorder  root->left ... root ... root->right
+preorder第一个元素定义为根，利用inorder中左右子树大小可以分离出preorder中左右子树序列，
+递归构造左子树和右子树
+
+利用hash table可以在每次递归时直接找到根节点的下标
+
+2. 迭代
+对于preorder中相邻的两个节点u,v
+\begin{itemize}
+	\item v 是 u的左儿子 inorder中v 在 u之前
+	\item v 是前某一个节点的右儿子 
+\end{itemize}
+利用一个栈和一个指针进行操作，栈初始存储根节点(preorder[0])，指针初始指向inorder[0]
+对preorder中每一个元素
+\begin{itemize}
+	\item 栈顶元素和指针元素不等，则将当前元素作为栈顶元素左儿子并入栈
+	\item 栈顶元素和指针元素相等，则循环弹出栈顶元素并移动指针直至二者不等，将当前元素作为
+			栈顶元素右儿子并入栈
+\end{itemize}
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+			if (!preorder.size()) return nullptr;
+
+			stack<TreeNode*> S;
+			TreeNode *root = new TreeNode(preorder[0]);
+			S.push(root);
+			int index = 0;
+
+			for (int i = 1; i < preorder.size(); ++i) {
+				TreeNode *tmp = new TreeNode(preorder[i]);
+				TreeNode *node = S.top();
+
+				if (node->val != inorder[index]) {
+					node->left = tmp;
+				}
+				else {
+					while (!S.empty() && S.top()->val == inorder[index]) {
+						node = S.top();
+						S.pop();
+						++index;
+					}
+					node->right = tmp;
+				}
+
+				S.push(tmp);
+			}
+
+			return root;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 77 组合 times : 2}
+1. 递归 保持递增序列即可保证无重复
+
+2. 迭代 按字典序输出每个结果，字典序写法如下，利用一个指针处理当前位置
+\begin{itemize}
+	\item 字典序最小序列 12...k，初始序列00...0，指针指向0
+	\item 指针元素递增，如果元素大于n则指针左移
+	\item 如果指针指向末尾则输出一个结果
+	\item 否则指针右移且复制前一个元素
+\end{itemize}
+
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<vector<int>> combine(int n, int k) {
+			vector<vector<int>> res;
+			vector<int> b(k, 0);
+			int i = 0;
+
+			while (i >= 0) {
+				++b[i];
+				if (b[i] > n) {
+					--i;
+				}
+				else if (i == k - 1) {
+					res.push_back(b);
+				}
+				else {
+					++i;
+					b[i] = b[i - 1];
+				}
+			}
+
+			return res;
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 46 全排列 times : 2}
+递归回溯
+1. 利用一个数组存储每一个位置是否被使用过
+
+2. 将nums分为左右两部分，左侧为已经确定下来的位置，右侧为子问题递归求解
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<vector<int>> res;
+		vector<vector<int>> permute(vector<int>& nums) {
+			dfs(0, nums);
+			return res;
+		}
+
+		void dfs(int start, vector<int>& nums) {
+			if (start == nums.size()) {
+				res.push_back(nums);
+				return;
+			}
+
+			for (int i = start; i < nums.size(); ++i) {
+				swap(nums[start], nums[i]);
+				dfs(start + 1, nums);
+				swap(nums[start], nums[i]);
+			}
+		}
+	\end{lstlisting}
+\end{framed}
+
+caution: dfs函数可以考虑传数组的复制，不穿地址，可以实现字典序输出
+
+\section{Leetcode 47 全排列 II times : 2}
+递归回溯
+将nums分为左右两部分，左侧为已经确定下来的位置，右侧为子问题递归求解
+通过将nums排序来去除重复元素，每次递归process过程判断当前位置元素与代替换元素
+是否相等，相等则不用替换
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		vector<vector<int>> res;
+		vector<vector<int>> premuteUnique(vector<int>& nums) {
+			dfs(0, nums);
+			return res;
+		}
+
+		void dfs(int start, vector<int> nums) {
+			if (start == nums.size()) {
+				res.push_back(nums);
+				return;
+			}
+
+			for (int i = strat; i < nums.size(); ++i) {
+				if (i != start && nums[i] == nums[start]) continue;
+				swap(nums[i], nums[start]);
+				dfs(start + 1, nums);
+			}
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 50 Pow(x, n) times : 2}
+1. 二分法   递归
+
+$Pow(x, n) = Pow(x, n/2) * Pow(x, n/2) * (n \% 2 ? x : 1)$
+
+2. 快速幂   迭代
+
+$n = \sum_i x_i * 2^i, \; x_i = 0, 1$
+
+故$Pow(x, n) = \Pi_i Pow(x, x_i * 2^i)$
+可以从小到大计算$Pow(x, 2^i)$，并将n不断右移一位，若$n \& 1 == 1$则将当前x乘入结果
+
+\section{Leetcode 78 子集 times : 2}
+1. 二分递归
+
+2. 本质是列出 1 << n 中的所有数，遍历 1 << n 将每个数对应的子集存储到结果中即可
+
+\section{Leetcode 17 电话号码的字母组合 times : 2}
+分治 递归
+
+\section{Leetcode 51 n皇后 times : 2}
+逐层分治递归
+
+利用bitmask进行压缩每一层可能的状态，依次判断当前状态是否与之前所有层的状态矛盾
+
+\section{Leetcode 169 多数元素 times : 2}
+1. 排序 O(nlogn)
+求数量大于n/2的元素，则排序后n/2处元素必为结果
+
+2. 分治 O(nlogn)
+分别求左右半数元素的多数元素，然后在整个数组中验证多数元素
+
+3. 投票算法 O(n)
+维护一个多数元素的候选，遍历整个数组，
+\begin{itemize}
+	\item 若当前票数为0则当前元素成为候选
+	\item 与候选相同的元素使投票+1
+	\item 与候选不同的元素使投票-1
+\end{itemize}
+
+\section{Leetcode 860 柠檬水找零 times : 2}
+贪心法找零钱
+
+\section{Leetcode 122 买卖股票的最佳时机II times : 2}
+贪心法
+
+通过每天相对前一天的价格来决定是否买卖
+\begin{itemize}
+	\item 若nums[i] > nums[i - 1] 则计划在i天卖出，收益计入结果
+	\item 反之在i天买入
+\end{itemize}
+
+\section{Leetcode 455 分发饼干 times : 2}
+贪心法
+
+用最小的饼干满足最小的孩子，注意每个孩子能得到的饼干数
+
+\section{Leetcode 874 模拟行走机器人 times : 2}
+利用hash table 存储障碍的坐标，根据command更新方向或者坐标，每走一步
+判断当前是否为障碍，每处理一次command更新最大距离
+
+\section{Leetcode 200 岛屿数量 times : 2}
+DFS
+
+\section{Leetcode 529 扫雷游戏 times : 2}
+DFS BFS
+
+处理一个E点时，先确定周围有多少雷，有雷则更新，美雷就DFS
+
+\section{Leetcode 55 跳跃游戏 times : 2}
+贪心法记录当前能到达的最大位置，若超过数组大小则返回true
 
 \end{document}
