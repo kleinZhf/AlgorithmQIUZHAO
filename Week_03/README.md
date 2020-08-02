@@ -57,6 +57,7 @@ while(n) {
     x *= x;
     n >>= 1;
 }
+```
 
 ## 子集
 - 二分递归
@@ -153,6 +154,7 @@ int binarySearch(nums, target) {
 
     return -1;
 }
+```
 
 ## 求sqrt(x)
 - 二分查找求解
