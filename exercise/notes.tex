@@ -413,7 +413,7 @@ caution : 每次弹出栈顶元素时计算一次面积$(i - S.top() - 1) * heig
 三指针动态规划，利用三个指针i2, i3, i5记录当前乘2，乘3，乘5的位置，每次选取三个数
 中较小的为下一个丑数，然后更新对应的指针。
 
-\section{Leetcode 347 前k个高频元素 times : 2}
+\section{Leetcode 347 前k个高频元素 times : 3}
 hash map 统计元素频次，大顶堆输出前k大元素
 
 $\mathrm{priority\_queue<Type, Container, Functional>}$
@@ -430,7 +430,7 @@ Functional 为类对象，不能用函数指针，默认使用less方法，构�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 236 二叉树最近公共祖先 times : 2}
+\section{Leetcode 236 二叉树最近公共祖先 times : 3}
 1. 分别dfs记录从root到p,q的路径，依次对比路径上的元素找到最近公共祖先
 
 2. 递归
@@ -469,7 +469,7 @@ Functional 为类对象，不能用函数指针，默认使用less方法，构�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 105 从前序与中序遍历序列构造二叉树 times : 2}
+\section{Leetcode 105 从前序与中序遍历序列构造二叉树 times : 3}
 1. 递归
 preorder root ... root->left ... root->right
 inorder  root->left ... root ... root->right
@@ -525,7 +525,7 @@ preorder第一个元素定义为根，利用inorder中左右子树大小可以�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 77 组合 times : 2}
+\section{Leetcode 77 组合 times : 3}
 1. 递归 保持递增序列即可保证无重复
 
 2. 迭代 按字典序输出每个结果，字典序写法如下，利用一个指针处理当前位置
@@ -562,7 +562,7 @@ preorder第一个元素定义为根，利用inorder中左右子树大小可以�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 46 全排列 times : 2}
+\section{Leetcode 46 全排列 times : 3}
 递归回溯
 1. 利用一个数组存储每一个位置是否被使用过
 
@@ -590,7 +590,7 @@ preorder第一个元素定义为根，利用inorder中左右子树大小可以�
 	\end{lstlisting}
 \end{framed}
 
-caution: dfs函数可以考虑传数组的复制，不穿地址，可以实现字典序输出
+caution: dfs函数可以考虑传数组的复制，不传地址，可以实现字典序输出
 
 \section{Leetcode 47 全排列 II times : 2}
 递归回溯
@@ -601,6 +601,7 @@ caution: dfs函数可以考虑传数组的复制，不穿地址，可以实现�
 	\begin{lstlisting}[language=C++]
 		vector<vector<int>> res;
 		vector<vector<int>> premuteUnique(vector<int>& nums) {
+			sort(nums.begin(), nums.end());
 			dfs(0, nums);
 			return res;
 		}
@@ -687,9 +688,26 @@ DFS
 \section{Leetcode 529 扫雷游戏 times : 2}
 DFS BFS
 
-处理一个E点时，先确定周围有多少雷，有雷则更新，美雷就DFS
+处理一个E点时，先确定周围有多少雷，有雷则更新，没雷就DFS
 
 \section{Leetcode 55 跳跃游戏 times : 2}
-贪心法记录当前能到达的最大位置，若超过数组大小则返回true
+1. 贪心法记录当前能到达的最大位置，若超过数组大小则返回true
+
+2. 从后向前贪心，当前点能达到goal时将goal更新为当前点，若goal能取到0则返回true
+
+\section{Leetcode 33 搜索旋转排序数组 times : 2}
+1. 利用二分查找找到旋转点，然后在排序数组上二分查找(真实坐标为$(cur + rot) \% n$)
+
+2. 直接二分查找
+\begin{itemize}
+	\item $left < mid and left <= target < mid$ 左区间有序且目标在左区间
+	\item $mid < right and (mid > target or right < target)$ 右区间有序且目标不在右区间
+	\item 上两种情况在左区间继续查找，否则在右区间继续查找
+\end{itemize}
+
+\section{Leetcode 74 搜索二维矩阵 times : 2}
+1. 二分找到所在行，再在行内二分搜索
+
+2. 把整个矩阵当作一维数组二分
 
 \end{document}

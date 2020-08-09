@@ -8,68 +8,46 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
-        if (board[click[0]][click[1]] == 'M') {
-            board[click[0]][click[1]] = 'X';
-            return board;
-        }
-        dfs(board, click[0], click[1]);
-        return board;
-    }
-private:
-    vector<vector<int>> direct{
-        {1, 0}, {0, 1}, {-1, 0}, {0, -1},
-        {1, -1}, {1, 1}, {-1, -1}, {-1, 1}
-    };
-    int ctBoom(vector<vector<char>>& board, int x, int y) {
-        int res = 0;
-        for (int i = 0; i < direct.size(); ++i) {
-            int nx = x + direct[i][0];
-            int ny = y + direct[i][1];
-            if (nx < 0 || nx >= board.size() || ny < 0 || ny >= board[0].size()) continue;
-            res += board[nx][ny] == 'M';
-        }
-        return res;
-    }
-    void dfs(vector<vector<char>>& board, int x, int y) {
-        if (x < 0 || x >= board.size() || y < 0 || y >= board[0].size()) return;
-        cout << x << ' ' << y << ' ' << board[x][y] << endl;
-        if (board[x][y] != 'E') return;
+    int numDecodings(string s) {
+        if (s.size() == 0 || s[0] == '0') return 0;
+        int n = s.size();
+        vector<int> dp(n, 0);
+        dp[0] = 1;
 
-        int ct = ctBoom(board, x, y);
-        cout << ct << endl;
-        if (ct) {
-            board[x][y] = '0' + ct;
-            return;
-        }
-        else {
-            board[x][y] = 'B';
-            for (int i = 0; i < direct.size(); ++i) {
-                int nx = x + direct[i][0];
-                int ny = y + direct[i][1];
-                dfs(board, nx, ny);
+        for (int i = 1; i < n; ++i) {
+            if (s[i] == '0') {
+                if (!valid1(s[i - 1])) return 0;
+                dp[i] = dp[i - 1];
+            }
+            else {
+                if (valid1(s[i - 1])) {
+                    cout << "---" << endl;
+                    cout << dp[i - 1] << ' ' << i << ' ' << valid2(s[i]) << endl;
+                    dp[i] = dp[i - 1] + (valid2(s[i]) ? (i == 1 ? 1 : dp[i - 2]) : 0);
+                    cout << dp[i] << endl;
+                }
+                else {
+                    dp[i] = dp[i - 1];
+                }
             }
         }
+
+        return dp[n - 1];
+    }
+private:
+    bool valid1(char c) {
+        if (c >= '1' && c <= '2') return true;
+        return false;
+    }
+
+    bool valid2(char c) {
+        if (c >= '0' && c <= '6') return true;
+        return false;
     }
 };
 
 int main(void) {
-    vector<vector<char>> grid{
-        {'E', 'E', 'E', 'E', 'E'},
-        {'E', 'E', 'M', 'E', 'E'},
-        {'E', 'E', 'E', 'E', 'E'},
-        {'E', 'E', 'E', 'E', 'E'}
-    };
-    vector<int> click{3, 0};
-
-    vector<vector<char>> res = Solution().updateBoard(grid, click);
-
-    for (const auto& r : res) {
-        for (const auto& s : r) {
-            cout << s << ' ';
-        }
-        cout << endl;
-    }
-
+    string s = "12";
+    cout << Solution().numDecodings(s) << endl;
     return 0;
 }
