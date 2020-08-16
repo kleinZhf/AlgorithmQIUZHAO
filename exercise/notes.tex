@@ -20,6 +20,8 @@
 \begin{document}
 算法刷题记录
 
+%\chapter{基础数据结构}
+
 \section{Leetcode 4 寻找两个正序数组的中位数 times : 4}
 二分划分数组方法，在较短数组上寻找划分点，通过二分法找到将两个数组分割为大，小两部分
 特别注意在二分过程中的数组越界和上下界问题！！
@@ -179,7 +181,7 @@ C++ io加速手段
 2. 双向BFS 用两个hash table分别存储从beginWord和endWord开始搜索的word,每次
 选择其中较小的table作为beginSet,搜到在endSet中的单词即可返回step
 
-\section{Leetcode 126 单词接龙II times : 3}
+\section{Leetcode 126 单词接龙II times : 4}
 BFS 同时存储路径依赖的邻接表，构造完成后DFS输出路径
 
 \section{Leetcode 70 爬楼梯 times : 4}
@@ -314,6 +316,8 @@ caution : 每次弹出栈顶元素时计算一次面积$(i - S.top() - 1) * heig
 维护一个数值递减的双端队列，从队尾添加元素，从队首读取当前最大值
 
 维护一个大顶堆
+
+%\chapter{DFS和BFS}
 
 \section{Leetcode 94 二叉树的中序遍历 times : 4}
 1.递归DFS
@@ -525,6 +529,8 @@ preorder第一个元素定义为根，利用inorder中左右子树大小可以�
 	\end{lstlisting}
 \end{framed}
 
+%\chapter{分治递归, 二分搜索}
+
 \section{Leetcode 77 组合 times : 3}
 1. 递归 保持递增序列即可保证无重复
 
@@ -592,7 +598,7 @@ preorder第一个元素定义为根，利用inorder中左右子树大小可以�
 
 caution: dfs函数可以考虑传数组的复制，不传地址，可以实现字典序输出
 
-\section{Leetcode 47 全排列 II times : 2}
+\section{Leetcode 47 全排列 II times : 3}
 递归回溯
 将nums分为左右两部分，左侧为已经确定下来的位置，右侧为子问题递归求解
 通过将nums排序来去除重复元素，每次递归process过程判断当前位置元素与代替换元素
@@ -621,7 +627,7 @@ caution: dfs函数可以考虑传数组的复制，不传地址，可以实现�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 50 Pow(x, n) times : 2}
+\section{Leetcode 50 Pow(x, n) times : 3}
 1. 二分法   递归
 
 $Pow(x, n) = Pow(x, n/2) * Pow(x, n/2) * (n \% 2 ? x : 1)$
@@ -633,20 +639,20 @@ $n = \sum_i x_i * 2^i, \; x_i = 0, 1$
 故$Pow(x, n) = \Pi_i Pow(x, x_i * 2^i)$
 可以从小到大计算$Pow(x, 2^i)$，并将n不断右移一位，若$n \& 1 == 1$则将当前x乘入结果
 
-\section{Leetcode 78 子集 times : 2}
+\section{Leetcode 78 子集 times : 3}
 1. 二分递归
 
 2. 本质是列出 1 << n 中的所有数，遍历 1 << n 将每个数对应的子集存储到结果中即可
 
-\section{Leetcode 17 电话号码的字母组合 times : 2}
+\section{Leetcode 17 电话号码的字母组合 times : 3}
 分治 递归
 
-\section{Leetcode 51 n皇后 times : 2}
+\section{Leetcode 51 n皇后 times : 4}
 逐层分治递归
 
 利用bitmask进行压缩每一层可能的状态，依次判断当前状态是否与之前所有层的状态矛盾
 
-\section{Leetcode 169 多数元素 times : 2}
+\section{Leetcode 169 多数元素 times : 3}
 1. 排序 O(nlogn)
 求数量大于n/2的元素，则排序后n/2处元素必为结果
 
@@ -661,10 +667,10 @@ $n = \sum_i x_i * 2^i, \; x_i = 0, 1$
 	\item 与候选不同的元素使投票-1
 \end{itemize}
 
-\section{Leetcode 860 柠檬水找零 times : 2}
+\section{Leetcode 860 柠檬水找零 times : 3}
 贪心法找零钱
 
-\section{Leetcode 122 买卖股票的最佳时机II times : 2}
+\section{Leetcode 122 买卖股票的最佳时机II times : 3}
 贪心法
 
 通过每天相对前一天的价格来决定是否买卖
@@ -673,29 +679,42 @@ $n = \sum_i x_i * 2^i, \; x_i = 0, 1$
 	\item 反之在i天买入
 \end{itemize}
 
-\section{Leetcode 455 分发饼干 times : 2}
+\section{Leetcode 455 分发饼干 times : 3}
 贪心法
 
 用最小的饼干满足最小的孩子，注意每个孩子能得到的饼干数
 
-\section{Leetcode 874 模拟行走机器人 times : 2}
+\section{Leetcode 874 模拟行走机器人 times : 3}
 利用hash table 存储障碍的坐标，根据command更新方向或者坐标，每走一步
 判断当前是否为障碍，每处理一次command更新最大距离
 
-\section{Leetcode 200 岛屿数量 times : 2}
+使用$unordered\_set$处理复杂数据结构时需要构造hash函数
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		struct myHash {
+			size_t operator()(vector<int> _vec) const {
+				return static_cast<size_t>(_vec[0] * 10 + _vec[1]);
+			}
+		};
+
+		unordered_set<vector<int>, myHash> obList;
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 200 岛屿数量 times : 3}
 DFS
 
-\section{Leetcode 529 扫雷游戏 times : 2}
+\section{Leetcode 529 扫雷游戏 times : 3}
 DFS BFS
 
 处理一个E点时，先确定周围有多少雷，有雷则更新，没雷就DFS
 
-\section{Leetcode 55 跳跃游戏 times : 2}
+\section{Leetcode 55 跳跃游戏 times : 3}
 1. 贪心法记录当前能到达的最大位置，若超过数组大小则返回true
 
 2. 从后向前贪心，当前点能达到goal时将goal更新为当前点，若goal能取到0则返回true
 
-\section{Leetcode 33 搜索旋转排序数组 times : 2}
+\section{Leetcode 33 搜索旋转排序数组 times : 3}
 1. 利用二分查找找到旋转点，然后在排序数组上二分查找(真实坐标为$(cur + rot) \% n$)
 
 2. 直接二分查找
@@ -705,9 +724,157 @@ DFS BFS
 	\item 上两种情况在左区间继续查找，否则在右区间继续查找
 \end{itemize}
 
-\section{Leetcode 74 搜索二维矩阵 times : 2}
+\section{Leetcode 74 搜索二维矩阵 times : 3}
 1. 二分找到所在行，再在行内二分搜索
 
 2. 把整个矩阵当作一维数组二分
+
+\subsection{二分技巧}
+\begin{itemize}
+	\item 依据是否要判断$left == right$的情况决定循环终止条件中有没有等号
+	\item 依据所需结果是否包含在某一条件中决定某一侧的二分是否包含$mid$
+	\item 如果某一侧二分需要包含$mid$则通过控制计算$mid$时是否加上$frac{1}{2}$控制$left, right$相邻
+		时$mid$取哪一个值，从而避免出现死循环
+\end{itemize}
+
+\section{Leetcode 153 寻找旋转排序数组最小值 times : 3}
+见Leetcode 33 二分找到旋转点
+
+\section{Leetcode 45 跳跃游戏 II times : 3}
+1. 动态规划
+
+计算某一步步数时穷举之前的格子，记录到达改点的最小步数
+
+时间复杂度$O(n^2)$，会超时
+
+2. 动态记录当前步数下能达到的最大点$maxlen$和多跳一步能达到的最大点$next\_max$，当前点小于
+$maxlen$时增加一步，更新$maxlen$为$next\_max$。
+
+%\chapter{动态规划}
+
+\section{Leetcode 198 打家劫舍 times : 3}
+动态规划
+
+dp数组定义为第i个房子前能偷到的最大金额，分解为两个子问题
+\begin{itemize}
+	\item 偷第i间房子最大偷到$dp[i - 2] + nums[i]$
+	\item 不偷第i间房子最大偷到$dp[i - 1]$
+\end{itemize}
+从而dp方程为$dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])$
+
+进一步节省空间，dp更新只需要前两个数，从而用三个数滚动更新dp即可
+
+\section{Leetcode 213 打家劫舍II times : 3}
+相较Leetcode 198房子改为环形排列，只需分别计算偷前n-1家和后n-1家的结果比较最大值即可
+
+\section{股票问题合集}
+
+\subsection{Leetcode 121 买卖股票的最佳时机 times : 3}
+记录最低价格，每天更新当前最低价买入能获得的利润，然后更新最低价格
+
+\subsection{Leetcode 122 买卖股票的最佳时机II times : 3}
+1. 比较每天价格相较前一天的价格，更高则更新利润
+
+2. 动态规划
+
+记录每一天持有股票的最高收益$dp0$和卖出股票的最高收益$dp1$，每天滚动更新这两个值
+
+\subsection{Leetcode 123 买卖股票的最佳时机III times : 3}
+动态规划
+
+三维dp数组$dp[i][j][k]$表示第i天卖出j次且当前手里股票状态为k时所能获得的最大利润
+\begin{itemize}
+	\item $dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j - 1][1] + prices[i])$
+	\item $dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j][0] - prices[i])$
+	\item 边界条件$dp[0][j][0] = 0$, $dp[0][j][1] = -prices[0]$
+\end{itemize}
+
+\subsection{Leetcode 309 最佳买卖股票时机含冷冻期 times : 3}
+同Leetcode 122, 动态规划，不同的是买入股票$dp1$需要根据冷冻期之前的数据，所以增加
+记录冷冻期之前的最大收益。
+
+\subsection{Leetcode 188 买卖股票的最佳时机IV times : 3}
+同Leetcode 123，注意当$k > \frac{n}{2}$时相当于没有买卖次数设置，可以直接返回Leetcode 122
+的结果
+
+\subsection{Leetcode 714 买卖股票的最佳时机含手续费 times : 3}
+同Leetcode 122，在每次买入时计入手续费即可，注意初始化$dp1$为INTMIN，后续操作不能越界
+
+\section{Leetcode 279 完全平方数 times : 2}
+1. BFS
+
+每一层BFS将当前元素减去某个完全平方数的结果压入队列，利用一个数组记录被访问过的数，
+当访问到0时返回当前BFS层数
+
+2. 动态规划
+
+自底向上，每个数遍历比其小的完全平方数，更新最少数目 $O(n\sqrt{n})$
+
+\section{Leetcode 72 编辑距离 times : 2}
+动态规划
+
+dp数组$dp[i][j]$表示word1前i个字符到word2前j个字符的编辑距离，dp方程
+\begin{itemize}
+	\item $dp[i][j] = min(dp[i - 1][j - 1] + word1[i] == word2[j], dp[i][j - 1], dp[i - 1][j])$
+\end{itemize}
+
+\section{Leetcode 62 不同路径 times : 2}
+动态规划
+
+\section{Leetcode 63 不同路径II times : 2}
+动态规划
+
+\section{Leetcode 980 不同路径III times : 2}
+递归DFS
+
+1. 利用一个hash tabel 存储未走过的点，DFS所有可能的路径，遇到终点且hash table 为空时即找到一条路径
+
+2. 记录未走过空格的总数量，当遇到终点且空格数量为零时计数加一
+
+\section{Leetcode 322 零钱兑换 times : 2}
+动态规划 + 贪心法
+
+\section{Leetcode 518 零钱兑换II times : 2}
+动态规划
+
+1. 二维dp数组$dp[i][j]$表示用前i个硬币凑出j的方法数，dp方程为
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		if (j < coins[i-1]) {
+			dp[i][j] = dp[i - 1][j];
+		}
+		else {
+			dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
+		}
+	\end{lstlisting}
+\end{framed}
+
+2. dp方程直用到了i-1中当前未更新值和i中已更新值，故可以用滚动数组优化
+\begin{framed}
+	\begin{lstlisting}[language=C++]
+		for (auto coin : coins) {
+			for (int i = 1; i <= amount; ++i) {
+				if (i >= coin) dp[i] += dp[i - coin];
+			}
+		}
+	\end{lstlisting}
+\end{framed}
+
+\section{Leetcode 191 位-1-的个数 times : 2}
+位运算 $x = x\&(x - 1)$ 可以将x最低位的1置零，重复将x最低位1置零直到
+x变为0
+
+\section{Leetcode 231 2-的幂 times : 2}
+2的幂有且仅有一个1，故判断清楚最低位1后是否为零
+
+\section{Leetcode 190 颠倒二进制位 times : 2}
+分别对输入和输出右移和左移32次即可
+
+\section{Leetcode 547 朋友圈 times : 2}
+并查集测试
+
+\section{Leetcode 212 单词搜索II times : 2}
+利用Trie进行搜索
+
 
 \end{document}
