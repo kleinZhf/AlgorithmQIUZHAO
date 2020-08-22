@@ -8,150 +8,60 @@
 using namespace std;
 
 
-class Trie {
-private:
-    vector<vector<int>> tr;
-    vector<int> isEnd;
-    int ct;
-public:
-    Trie() {
-        tr = vector<vector<int>> (1, vector<int>(26, 0));
-        ct = 0;
-        isEnd = vector<int>(1, 0);
-    }
-
-    void insert(string word) {
-        int k = 0;
-        for (int i = 0; i < word.size(); ++i) {
-            int index = word[i] - 'a';
-            if (!tr[k][index]) {
-                tr[k][index] = ++ct;
-                tr.push_back(vector<int>(26, 0));
-                isEnd.push_back(0);
-            }
-            k = tr[k][index];
-        }
-        isEnd[k] = 1;
-    }
-
-    bool search(string word) {
-        int k = 0;
-        for (int i = 0; i < word.size(); ++i) {
-            int index = word[i] - 'a';
-            if (!tr[k][index]) return false;
-            k = tr[k][index];
-        }
-
-        return isEnd[k];
-    }
-
-    bool startsWith(string prefix) {
-        int k = 0;
-        for (int i = 0; i < prefix.size(); ++i) {
-            int index = prefix[i] - 'a';
-            if (!tr[k][index]) return false;
-            k = tr[k][index];
-        }
-
-        return true;
-    }
-
-    int searchLetter(int k, char c) {
-        if (k > ct || k < 0) return -1;
-        int index = c - 'a';
-        return tr[k][index];
-    }
-
-    bool searchEnd(int k) {
-        if (k > ct || k < 0) return -1;
-        return isEnd[k];
-    }
-
-    void showEnd() {
-        for (int i = 1; i <= ct; ++i) {
-            if (isEnd[i]) cout << i << ' ';
-        }
-        cout << endl;
-    }
-};
 class Solution {
 public:
-    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
-        for (const auto &word : words) {
-            twords.insert(word);
-        }
-
-        twords.showEnd();
-
-        for (int i = 0; i < board.size(); ++i) {
-            for (int j = 0; j < board[0].size(); ++j) {
-                string tmp;
-                dfs(board, i, j, 0, tmp);
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        for (int row = 0; row < matrix.size(); ++row) {
+            int cur = 0;
+            for (int col = 0; col < matrix[0].size(); ++col) {
+                cur += matrix[row][col];
+                matrix[row][col] = cur;
             }
         }
 
-        vector<string> result;
-        for (const auto &s : res) {
-            result.push_back(s);
+        int m = matrix.size();
+        int n = matrix[0].size();
+
+        vector<vector<vector<int>>> dp(m, 
+        vector<vector<int>>(n, vector<int>(n, INT_MIN)));
+
+        int res = INT_MIN;
+
+        for (int lcol = 0; lcol < n; ++lcol) {
+            for (int rcol = lcol; rcol < n; ++rcol) {
+                for (int row = 0; row < m; ++row) {
+                    int cur = matrix[row][rcol] - (lcol ? matrix[row][lcol - 1] : 0);
+                    if (cur > k) continue;
+
+                    if (lcol == 0 && rcol == 2) {
+                        cout << lcol << ' ' << rcol << ' ' << row << ' ' << cur << endl;
+                    }
+
+                    dp[row][lcol][rcol] = cur;
+
+                    if (row && dp[row - 1][lcol][rcol] >= 0 && cur + dp[row - 1][lcol][rcol] <= k) {
+                        dp[row][lcol][rcol] += dp[row - 1][lcol][rcol];
+                    }
+
+                    res = max(res, dp[row][lcol][rcol]);
+                }
+            }
         }
 
-        return result;
-    }
-private:
-    Trie twords;
-    unordered_set<string> res;
-    vector<vector<int>> d{
-        {0, 1}, {1, 0}, {0, -1}, {-1, 0}
-    };
-    void dfs(vector<vector<char>>& board, int x, int y, int k, string& tmp) {
-        cout << "flag1" << x << ' ' << y << endl;
-        if (x < 0 || x >= board.size() || y < 0 || y >= board[0].size()) {
-            return;
-        }
-        cout << "flag2" << x << ' ' << y << endl;
-
-        if (board[x][y] == '@') return;
-        int nxt = twords.searchLetter(k, board[x][y]);
-        cout << x << ' ' << y << endl;
-        cout << k << ' ' << board[x][y] << ' ' << nxt << endl;
-        cout << "----" << endl;
-        if (!nxt) return;
-        tmp.push_back(board[x][y]);
-        char cur = board[x][y];
-        board[x][y] = '@';
-        if (twords.searchEnd(nxt)) res.insert(tmp);
-
-        for (int i = 0; i < d.size(); ++i) {
-            int nx = x + d[i][0];
-            int ny = y + d[i][1];
-            cout << nx << '@' << ny << endl;
-            dfs(board, nx, ny, nxt, tmp);
-        }
-
-        tmp.pop_back();
-        board[x][y] = cur;
+        return res;
     }
 };
 
 int main(void) {
-    vector<vector<char>> board{
-        {'o', 'a', 'a', 'n'},
-        {'e', 't', 'a', 'e'},
-        {'i', 'h', 'k', 'r'},
-        {'i', 'f', 'l', 'v'}
-    };
-    vector<string> words{
-        "eat", "oath", "pea", "rain"
+    vector<vector<int>> matrix{
+        {5, -4, -3, 4},
+        {-3, -4, 4, 5},
+        {5, 1, 5, -4}
     };
 
-    vector<vector<char>> board1{
-        {'a', 'a'}
-    };
-    vector<string> words1{
-        "aa"
-    };
+    int k = 8;
 
-    vector<string> res = Solution().findWords(board1, words1);
-    for (const auto &s : res) cout << s << endl;
+    cout << Solution().maxSumSubmatrix(matrix, k) << endl;
+    
     return 0;
 }

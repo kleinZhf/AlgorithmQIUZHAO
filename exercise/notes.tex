@@ -800,7 +800,7 @@ dp数组定义为第i个房子前能偷到的最大金额，分解为两个子�
 \subsection{Leetcode 714 买卖股票的最佳时机含手续费 times : 3}
 同Leetcode 122，在每次买入时计入手续费即可，注意初始化$dp1$为INTMIN，后续操作不能越界
 
-\section{Leetcode 279 完全平方数 times : 2}
+\section{Leetcode 279 完全平方数 times : 3}
 1. BFS
 
 每一层BFS将当前元素减去某个完全平方数的结果压入队列，利用一个数组记录被访问过的数，
@@ -810,7 +810,7 @@ dp数组定义为第i个房子前能偷到的最大金额，分解为两个子�
 
 自底向上，每个数遍历比其小的完全平方数，更新最少数目 $O(n\sqrt{n})$
 
-\section{Leetcode 72 编辑距离 times : 2}
+\section{Leetcode 72 编辑距离 times : 3}
 动态规划
 
 dp数组$dp[i][j]$表示word1前i个字符到word2前j个字符的编辑距离，dp方程
@@ -818,23 +818,23 @@ dp数组$dp[i][j]$表示word1前i个字符到word2前j个字符的编辑距离�
 	\item $dp[i][j] = min(dp[i - 1][j - 1] + word1[i] == word2[j], dp[i][j - 1], dp[i - 1][j])$
 \end{itemize}
 
-\section{Leetcode 62 不同路径 times : 2}
+\section{Leetcode 62 不同路径 times : 3}
 动态规划
 
-\section{Leetcode 63 不同路径II times : 2}
+\section{Leetcode 63 不同路径II times : 3}
 动态规划
 
-\section{Leetcode 980 不同路径III times : 2}
+\section{Leetcode 980 不同路径III times : 3}
 递归DFS
 
 1. 利用一个hash tabel 存储未走过的点，DFS所有可能的路径，遇到终点且hash table 为空时即找到一条路径
 
 2. 记录未走过空格的总数量，当遇到终点且空格数量为零时计数加一
 
-\section{Leetcode 322 零钱兑换 times : 2}
+\section{Leetcode 322 零钱兑换 times : 3}
 动态规划 + 贪心法
 
-\section{Leetcode 518 零钱兑换II times : 2}
+\section{Leetcode 518 零钱兑换II times : 3}
 动态规划
 
 1. 二维dp数组$dp[i][j]$表示用前i个硬币凑出j的方法数，dp方程为
@@ -848,6 +848,7 @@ dp数组$dp[i][j]$表示word1前i个字符到word2前j个字符的编辑距离�
 		}
 	\end{lstlisting}
 \end{framed}
+注意更新时只用到了当前列的上一个元素和当前行之前的元素，可以用一维滚动数组进一步优化
 
 2. dp方程直用到了i-1中当前未更新值和i中已更新值，故可以用滚动数组优化
 \begin{framed}
@@ -860,21 +861,37 @@ dp数组$dp[i][j]$表示word1前i个字符到word2前j个字符的编辑距离�
 	\end{lstlisting}
 \end{framed}
 
-\section{Leetcode 191 位-1-的个数 times : 2}
+\section{Leetcode 191 位-1-的个数 times : 3}
 位运算 $x = x\&(x - 1)$ 可以将x最低位的1置零，重复将x最低位1置零直到
 x变为0
 
-\section{Leetcode 231 2-的幂 times : 2}
-2的幂有且仅有一个1，故判断清楚最低位1后是否为零
 
-\section{Leetcode 190 颠倒二进制位 times : 2}
+\section{Leetcode 231 2-的幂 times : 3}
+2的幂有且仅有一个1，故判断清楚最低位1后是否为零
+注意整形越界
+
+\section{Leetcode 190 颠倒二进制位 times : 3}
 分别对输入和输出右移和左移32次即可
 
-\section{Leetcode 547 朋友圈 times : 2}
+\section{Leetcode 547 朋友圈 times : 3}
 并查集测试
 
-\section{Leetcode 212 单词搜索II times : 2}
+\section{Leetcode 212 单词搜索II times : 3}
 利用Trie进行搜索
 
+\section{Leetcode 410 分割数组的最大值 times : 3}
+最大值最小值问题，二分查找
+
+先确定结果的区间，然后在区间内二分查找，对每一个mid值判断是否能够完成
+条件，最小或最大满足条件的值即为结果
+
+\section{Leetcode 234 回文链表 times : 2}
+快慢指针确定链表的中点，翻转后半部分链表，逐个比较前半部分和后半部分
+
+\section{Leetcode 363 矩形区域不超过k的最大数值和 times : 2}
+记录每行的前缀和，遍历lcol和rcol，计算lcol和rcol之间每行所能得到的最大数值
+
+\section{Leetcode 1122 数组的相对排序 times : 2}
+计数排序
 
 \end{document}
